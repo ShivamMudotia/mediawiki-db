@@ -159,6 +159,18 @@ http://test.mediawiki.mydomain.com
 
 ### Similary, make more values.<instance>.yaml files for DB and App and use them to create more instance
 
+################################################
+#######Now - Let's Scale this test instance #######
+
+## Change number of replicas from 1 to 3 in below file
+
+vi ~/mediawiki-app/helm-charts/mediawiki-app/values.test.yaml
+
+# Run a helm upgrade. This will scale test app pods from 1 to 3.
+
+helm upgrade wiki-app-test . -f values.test.yaml
+
+
 #########################################################################################
 
 ###################################
