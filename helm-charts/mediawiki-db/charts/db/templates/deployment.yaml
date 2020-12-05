@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Chart.Name }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: {{ .Chart.Name }}
+spec:
+  replicas: {{ .Values.global.replicas }}
+  selector:
+    matchLabels:
+      app: {{ .Chart.Name }}
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        app: {{ .Chart.Name }}
+    spec:
+      containers:
+        - env:
+            - name: TZ
+              value: Asia/Kolkata
+          image: {{ .Values.global.registry_url }}/{{ .Chart.Name }}:latest
+          imagePullPolicy: Always
+          name: {{ .Chart.Name }}
+          ports:
+            - containerPort: 3306
+              protocol: TCP
+          resources:
+            limits:
+              cpu: {{ .Values.global.CPU.limits }}
+              memory: {{ .Values.global.RAM.limits }}
+            requests:
+              cpu: {{ .Values.global.CPU.requests }}
+              memory: {{ .Values.global.RAM.requests }}
+          envFrom:
+            - configMapRef:
+                name: {{ .Chart.Name }}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30

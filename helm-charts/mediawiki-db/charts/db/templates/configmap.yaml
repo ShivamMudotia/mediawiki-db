@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Chart.Name }}
+  labels:
+    app: {{ .Chart.Name }}
+  namespace: {{ .Release.Namespace }}
+data:
+  MYSQL_ROOT_PASSWORD: {{ .Values.global.MYSQL_ROOT_PASSWORD | quote }} 
+  MYSQL_DATABASE: {{ .Values.global.MYSQL_DATABASE | quote }} 
+  MYSQL_USER: {{ .Values.global.MYSQL_USER | quote }} 
+  MYSQL_PASSWORD: {{ .Values.global.MYSQL_PASSWORD | quote }} 
+  

@@ -1,0 +1,15 @@
+--- 
+global: 
+  registry_url: mshivam21
+  MYSQL_ROOT_PASSWORD: Changeme
+  MYSQL_DATABASE: wikidatabase
+  MYSQL_USER: wikiuser
+  MYSQL_PASSWORD: Changeme
+  RAM:
+    requests: 800Mi
+    limits: 2000Mi
+  CPU:
+    requests: 200m
+    limits: 500m
+  replicas: 1
+  

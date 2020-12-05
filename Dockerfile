@@ -1,0 +1,5 @@
+FROM mysql:5.7
+ENV MYSQL_ROOT_PASSWORD=Changeme
+ENV MYSQL_DATABASE=wikidatabase
+ENV MYSQL_USER=wikiuser
+ENV MYSQL_PASSWORD=Changeme
