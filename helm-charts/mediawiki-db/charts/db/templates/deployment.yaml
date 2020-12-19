@@ -42,8 +42,25 @@ spec:
                 name: {{ .Chart.Name }}
           terminationMessagePath: /dev/termination-log
           terminationMessagePolicy: File
+          livenessProbe:
+            tcpSocket:
+              port: 3306
+            initialDelaySeconds: 15
+            periodSeconds: 20
+          readinessProbe:
+            tcpSocket:
+              port: 3306
+            timeoutSeconds: 2
+          volumeMounts:
+            - mountPath: /var/lib/mysql
+              name: mediawiki-storage
       dnsPolicy: ClusterFirst
       restartPolicy: Always
       schedulerName: default-scheduler
       securityContext: {}
       terminationGracePeriodSeconds: 30
+      volumes:
+        - hostPath:
+            path: /mediawiki/{{ .Values.global.WSGSITENAME }}/db
+            type: ""
+          name: mediawiki-storage

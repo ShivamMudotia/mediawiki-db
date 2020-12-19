@@ -8,17 +8,16 @@
 2) The configurations are templated and new instance of DB and App can be created just by adding a new namespace and a new values file, which we will see in below steps.
 3) Only one instance of App and DB to be deployed in a namespace.
 4) This will also create an ingress object (route) to access app from outside the cluster
-5) No Dynamic Storage Provisioning. No PV/PVC used for persistent storage. I am using hostPath as I have not setup NFS/GlusterFS or other storage and LocalSettings.php needs to be updated (and stateless pod for mediawiki app pod won't work).
+5) No Dynamic Storage Provisioning. No PV/PVC used for persistent storage. I am using hostPath as I have not setup NFS/GlusterFS or other storage and LocalSettings.php needs to be updated (and stateless pod for mediawiki app pod won't work). same directory is used for DB as well.
 My K8s cluster has just one worker node, so I am going to create a /mediawiki directory on it. If your setup has multiple worker nodes, then you might need NFS and share has to be mounted on all worker nodes to use hostPath or use PV/PVC's for this setup to work. Same /mediawiki directory will be use for multiple instances of mediawiki.
-6) DB (Mysql) pod is stateless for this exercise.
-7) Have use mediawiki version 1.31.10, as this is the latest stable version.
-8) SSL Termination is not done.
-9) I am using docker, helm and Kubernetes stack.
-10) docker image build is manual.
-11) There is no development/customization done to mediawiki. Its Vanilla installation
+6) Have use mediawiki version 1.31.10, as this is the latest stable version.
+7) SSL Termination is not done.
+8) I am using docker, helm and Kubernetes stack.
+9) docker image build is manual. Not with Jeknkins.
+10) There is no development/customization done to mediawiki. Its Vanilla installation
 
 ## Future enhancements ##
-1)Use PVC for persistent storage.
+1)Use PVC ( instead of hostPath ) for persistent storage.
 2)SSL Termination either at External Load balancer or SSL with ingress.
 3)There should be a multibranch Jenkins pipeline which should build and deploy not just new instances (following below explained steps put in a pipeline) and also trigger a build and deployment when code is pushed to repo by developers. 
 
@@ -169,6 +168,10 @@ vi ~/mediawiki-app/helm-charts/mediawiki-app/values.test.yaml
 # Run a helm upgrade. This will scale test app pods from 1 to 3.
 
 helm upgrade wiki-app-test . -f values.test.yaml
+
+# Other way to directly scale is using kubectl. Above is the recommended approach as that will be persistent (when helm charts are used again for this release for any updates to k8s objects)
+
+kubectl -n test scale deployment/mediawiki-app --replicas=3
 
 
 #########################################################################################

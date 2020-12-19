@@ -1,6 +1,7 @@
 --- 
 global: 
   registry_url: mshivam21
+  WSGSITENAME: test
   MYSQL_ROOT_PASSWORD: Changeme
   MYSQL_DATABASE: wikidatabase
   MYSQL_USER: wikiuser
