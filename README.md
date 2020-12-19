@@ -167,7 +167,7 @@ vi ~/mediawiki-app/helm-charts/mediawiki-app/values.test.yaml
 
 # Run a helm upgrade. This will scale test app pods from 1 to 3.
 
-helm upgrade wiki-app-test . -f values.test.yaml
+helm upgrade wiki-app-test . -f values.test.yaml --namespace=test
 
 # Other way to directly scale is using kubectl. Above is the recommended approach as that will be persistent (when helm charts are used again for this release for any updates to k8s objects)
 
@@ -176,16 +176,19 @@ kubectl -n test scale deployment/mediawiki-app --replicas=3
 
 #########################################################################################
 
-###################################
-### Cleanup - Delete all stacks ###
-###################################
+##################################################
+### Cleanup - Delete all stacks and namespaces ###
+##################################################
 
 helm delete wiki-app-dev -n dev
 helm delete wiki-db-dev -n dev
 helm delete wiki-app-test -n test
 helm delete wiki-db-test -n test
 
+kubectl delete ns dev
+kubectl delete ns test
 
+## You might also want to cleanup /mediawiki directory on node which has DB data ##
 ##########################################################################################
 
 
